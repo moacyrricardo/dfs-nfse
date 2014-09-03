@@ -65,12 +65,13 @@ import br.com.dsfnet.nfse.wsnfe2.tp.TpMetodoEnvio;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "cabecalho", "lote" })
+@XmlType(name = "", propOrder = { "cabecalho", "lote", "signature" })
 @XmlRootElement(name = "ReqEnvioLoteRPS")
 public class ReqEnvioLoteRPS {
 
 	@XmlElement(name = "Cabecalho", required = true)
 	protected ReqEnvioLoteRPS.Cabecalho cabecalho;
+
 	@XmlElement(name = "Lote", required = true)
 	protected TpLote lote;
 

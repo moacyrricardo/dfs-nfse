@@ -12,4 +12,7 @@
 		<module>dfs-nfse-core</module>
 		<module>dfs-nfse-campinas</module>
 	</modules>
+	<properties>
+		<jdk.version>1.6</jdk.version>
+	</properties>
 </project>
