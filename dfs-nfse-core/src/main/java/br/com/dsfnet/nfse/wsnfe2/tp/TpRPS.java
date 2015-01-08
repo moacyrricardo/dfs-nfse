@@ -389,6 +389,9 @@ public class TpRPS {
      */
     public void setNumeroRPS(int value) {
         this.numeroRPS = value;
+        
+        if(this.id == null || this.id == "")
+        	this.id = "rps:" + value;
     }
 
     /**
