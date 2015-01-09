@@ -103,39 +103,6 @@ public class Assinador {
 	private XMLSignatureFactory sigFactory;
 
 	// private KeyStore keyStore;
-	
-	private static final String KEY_STORE_TYPE = "JKS";
-	private static final String KEY_STORE_NAME = "/home/eduardo/Downloads/clientcert.jks";
-//	private static final String KEY_STORE_NAME = "/home/moa/Documents/5Andar/dfs-nfse/clientcert.jks";
-	private static final String KEY_STORE_PASS = "";
-	private static final String PRIVATE_KEY_PASS = "";
-	private static final String KEY_ALIAS = "QUINTO ANDAR SERVICOS IMOBILIARIOS LTDA:16788643000181";
-
-	private static final String PATH = "/ns1:ReqEnvioLoteRPS/Lote";
-
-	private static enum SignatureType {
-	SIGN_BY_ID, SIGN_BY_PATH, SIGN_WHOLE_DOCUMENT
-	};
-
-	public static String sign(String xmlString, String idLote) {
-		
-		try{
-			
-			InputStream stream = new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8));
-			Assinador ass = new Assinador(stream).assinarPorId(idLote);
-	
-			ass.useKeystore(new FileInputStream(KEY_STORE_NAME), Assinador.KEY_STORE_TYPE_JKS, KEY_STORE_PASS, KEY_ALIAS, PRIVATE_KEY_PASS);
-		
-			java.io.ByteArrayOutputStream result = new java.io.ByteArrayOutputStream();
-			ass.buildAsStream(result);
-			
-			return new String(result.toByteArray());
-			
-		} catch(Exception e){
-			throw new RuntimeException("Erro gerando Assinatura - Certificado Digital.", e);
-		}
-	}
-
 
 	public Assinador(Document doc) {
 		this.doc = doc;
