@@ -9,6 +9,7 @@
 package br.com.dsfnet.nfse.wsnfe2.tp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +80,9 @@ public class TpListaDeducoes {
     
     public BigDecimal getValorTotalDeducoes(){
     	
-    	BigDecimal total = new BigDecimal(0);
+    	BigDecimal total = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
     	for(TpDeducoes i: this.deducao){
-    		total.add(i.getValorDeduzir());
+    		total = total.add(i.getValorDeduzir());
     	}
     	
     	return total;
