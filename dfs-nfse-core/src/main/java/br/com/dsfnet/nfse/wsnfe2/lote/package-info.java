@@ -5,5 +5,12 @@
 // Generated on: 2014.08.19 at 01:26:29 PM BRT 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://localhost:8080/WsNFe2/lote")
+@javax.xml.bind.annotation.XmlSchema(
+		xmlns = { 
+				@XmlNs(prefix = "tipos", namespaceURI = "http://issdigital.campinas.sp.gov.br/WsNFe2/tp")
+				}, 
+				namespace = "http://localhost:8080/WsNFe2/lote",
+				location = "http://localhost:8080/WsNFe2/lote http://issdigital.campinas.sp.gov.br/WsNFe2/xsd/ReqEnvioLoteRPS.xsd"
+		)
 package br.com.dsfnet.nfse.wsnfe2.lote;
+import javax.xml.bind.annotation.XmlNs;
