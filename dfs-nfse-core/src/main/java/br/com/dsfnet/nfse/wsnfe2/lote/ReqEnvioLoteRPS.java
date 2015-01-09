@@ -65,8 +65,8 @@ import br.com.dsfnet.nfse.wsnfe2.tp.TpMetodoEnvio;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "cabecalho", "lote", "signature" })
-@XmlRootElement(name = "ReqEnvioLoteRPS")
+@XmlType(name = "", propOrder = { "cabecalho", "lote" })
+@XmlRootElement(name = "ReqEnvioLoteRPS", namespace = "http://localhost:8080/WsNFe2/lote")
 public class ReqEnvioLoteRPS {
 
 	@XmlElement(name = "Cabecalho", required = true)

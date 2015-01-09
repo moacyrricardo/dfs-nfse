@@ -11,6 +11,7 @@ package br.com.dsfnet.nfse.wsnfe2.tp;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,7 +19,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import br.com.dsfnet.nfse.util.AssinaturaAdapter;
 
 
 /**
@@ -152,7 +157,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "itens"
 })
 public class TpRPS {
-
+	@XmlJavaTypeAdapter(AssinaturaAdapter.class)
     @XmlElement(name = "Assinatura", required = true)
     protected byte[] assinatura;
     @XmlElement(name = "InscricaoMunicipalPrestador")
@@ -389,6 +394,9 @@ public class TpRPS {
      */
     public void setNumeroRPS(int value) {
         this.numeroRPS = value;
+        
+        if(this.id == null || this.id == "")
+        	this.id = "rps:" + value;
     }
 
     /**

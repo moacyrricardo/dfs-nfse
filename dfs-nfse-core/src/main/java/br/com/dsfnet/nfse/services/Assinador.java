@@ -1,11 +1,14 @@
 package br.com.dsfnet.nfse.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyException;
 import java.security.KeyStore;
@@ -66,6 +69,7 @@ import br.com.dsfnet.nfse.wsnfe2.tp.TpDeducaoPor;
 import br.com.dsfnet.nfse.wsnfe2.tp.TpDeducoes;
 import br.com.dsfnet.nfse.wsnfe2.tp.TpItens;
 import br.com.dsfnet.nfse.wsnfe2.tp.TpRPS;
+import br.com.dsfnet.nfse.wsnfe2.tp.TpTipoRecolhimento;
 
 /**
  * Gerador de assinaturas para RPS E também é um acessório para assinar XMLs
@@ -99,6 +103,39 @@ public class Assinador {
 	private XMLSignatureFactory sigFactory;
 
 	// private KeyStore keyStore;
+	
+	private static final String KEY_STORE_TYPE = "JKS";
+	private static final String KEY_STORE_NAME = "/home/eduardo/Downloads/clientcert.jks";
+//	private static final String KEY_STORE_NAME = "/home/moa/Documents/5Andar/dfs-nfse/clientcert.jks";
+	private static final String KEY_STORE_PASS = "";
+	private static final String PRIVATE_KEY_PASS = "";
+	private static final String KEY_ALIAS = "QUINTO ANDAR SERVICOS IMOBILIARIOS LTDA:16788643000181";
+
+	private static final String PATH = "/ns1:ReqEnvioLoteRPS/Lote";
+
+	private static enum SignatureType {
+	SIGN_BY_ID, SIGN_BY_PATH, SIGN_WHOLE_DOCUMENT
+	};
+
+	public static String sign(String xmlString, String idLote) {
+		
+		try{
+			
+			InputStream stream = new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8));
+			Assinador ass = new Assinador(stream).assinarPorId(idLote);
+	
+			ass.useKeystore(new FileInputStream(KEY_STORE_NAME), Assinador.KEY_STORE_TYPE_JKS, KEY_STORE_PASS, KEY_ALIAS, PRIVATE_KEY_PASS);
+		
+			java.io.ByteArrayOutputStream result = new java.io.ByteArrayOutputStream();
+			ass.buildAsStream(result);
+			
+			return new String(result.toByteArray());
+			
+		} catch(Exception e){
+			throw new RuntimeException("Erro gerando Assinatura - Certificado Digital.", e);
+		}
+	}
+
 
 	public Assinador(Document doc) {
 		this.doc = doc;
@@ -229,6 +266,14 @@ public class Assinador {
 			((Element) nodeToSign).setIdAttribute("Id", true);
 			sigParent = nodeToSign.getParentNode();
 			referenceURI = "#" + id;
+			
+			transforms = new ArrayList<Transform>() {
+				{
+					add(sigFactory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+					add(sigFactory.newCanonicalizationMethod( CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null));
+				}
+			};
+			
 			/*
 			 * This is not needed since the signature is alongside the signed
 			 * element, not enclosed in it. transforms =
@@ -271,7 +316,7 @@ public class Assinador {
 
 		//TODO add a way to choose if want X509, RSA Key Value or both 
 		// Create a KeyInfo and add the KeyValue to it
-		KeyInfo keyInfo = keyInfoFactory.newKeyInfo(Arrays.asList(keyInfoFactory.newX509Data(Collections.singletonList(cert)), keyValue));
+		KeyInfo keyInfo = keyInfoFactory.newKeyInfo(Arrays.asList(keyInfoFactory.newX509Data(Collections.singletonList(cert))));
 
 		// Create a DOMSignContext and specify the RSA PrivateKey and
 		// location of the resulting XMLSignature's parent element
@@ -280,8 +325,9 @@ public class Assinador {
 
 		// Create the SignedInfo
 		SignedInfo signedInfo = sigFactory.newSignedInfo(
-				sigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, (C14NMethodParameterSpec) null),
-				sigFactory.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
+				sigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+				sigFactory.newSignatureMethod(SignatureMethod.RSA_SHA1, null), 
+				Collections.singletonList(ref));
 		// Create the XMLSignature (but don't sign it yet)
 		XMLSignature signature = sigFactory.newXMLSignature(signedInfo, keyInfo);
 
@@ -339,26 +385,31 @@ public class Assinador {
 		assinatura.append(preencherComEspacos(rps.getTributacao() + "", 2));
 
 		assinatura.append(rps.getSituacaoRPS());
-		assinatura.append(rps.getTipoRecolhimento());
+		assinatura.append(rps.getTipoRecolhimento() == TpTipoRecolhimento.A ? "N" : "S");
 
 		BigDecimal valorSemDeducao = new BigDecimal(0);
 		BigDecimal valorDaDeducao = new BigDecimal(0);
 		for (TpItens it : rps.getItens().getItem()) {
 			valorSemDeducao = valorSemDeducao.add(it.getValorTotal());
 		}
-		for (TpDeducoes it : rps.getDeducoes().getDeducao()) {
-			BigDecimal deducaoAtual = new BigDecimal(0);
-			if (it.getDeducaoPor() == TpDeducaoPor.PERCENTUAL) {
-				deducaoAtual = it.getPercentualDeduzir();
-				deducaoAtual = deducaoAtual.multiply(valorSemDeducao);
-			} else if (it.getDeducaoPor() == TpDeducaoPor.VALOR) {
-				deducaoAtual = it.getValorDeduzir();
+		
+		if(rps.getDeducoes() != null){				
+			if(  rps.getDeducoes().getDeducao() != null){
+				for (TpDeducoes it : rps.getDeducoes().getDeducao()) {
+					BigDecimal deducaoAtual = new BigDecimal(0);
+					if (it.getDeducaoPor() == TpDeducaoPor.PERCENTUAL) {
+						deducaoAtual = it.getPercentualDeduzir();
+						deducaoAtual = deducaoAtual.multiply(valorSemDeducao);
+					} else if (it.getDeducaoPor() == TpDeducaoPor.VALOR) {
+						deducaoAtual = it.getValorDeduzir();
+					}
+					valorDaDeducao = valorDaDeducao.add(deducaoAtual);
+					// valorSemDeducao.add(it.getValorTotal());
+				}
 			}
-			valorDaDeducao = valorDaDeducao.add(deducaoAtual);
-			// valorSemDeducao.add(it.getValorTotal());
 		}
-		valorSemDeducao.setScale(0, RoundingMode.DOWN);
-		valorDaDeducao.setScale(0, RoundingMode.UP);
+		valorSemDeducao.setScale(2, RoundingMode.HALF_UP);
+		valorDaDeducao.setScale(2, RoundingMode.HALF_UP);
 
 		valorSemDeducao = valorSemDeducao.subtract(valorDaDeducao);
 		assinatura.append(preencherComZeros(valorSemDeducao.toString().replaceAll("[^0-9]", ""), 15));

@@ -8,8 +8,10 @@
 
 package br.com.dsfnet.nfse.wsnfe2.tp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -73,6 +75,16 @@ public class TpListaDeducoes {
             deducao = new ArrayList<TpDeducoes>();
         }
         return this.deducao;
+    }
+    
+    public BigDecimal getValorTotalDeducoes(){
+    	
+    	BigDecimal total = new BigDecimal(0);
+    	for(TpDeducoes i: this.deducao){
+    		total.add(i.getValorDeduzir());
+    	}
+    	
+    	return total;
     }
 
 }
