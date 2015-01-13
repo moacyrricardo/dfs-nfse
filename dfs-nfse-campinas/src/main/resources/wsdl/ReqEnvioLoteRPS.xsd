@@ -5,7 +5,7 @@
 	<xs:import namespace="http://localhost:8080/WsNFe2/tp"
 		schemaLocation="Tipos.xsd" />
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
-		schemaLocation="xmldsig-core-schema_v1.01.xsd" />
+		schemaLocation="http://issdigital.campinas.sp.gov.br/WsNFe2/xsd/xmldsig-core-schema_v1.01.xsd" />
 	<xs:element name="ReqEnvioLoteRPS">
 		<xs:annotation>
 			<xs:documentation>Schema utilizado para envio de lote de RPS.</xs:documentation>
