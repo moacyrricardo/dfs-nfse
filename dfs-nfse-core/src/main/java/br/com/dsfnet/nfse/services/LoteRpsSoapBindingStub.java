@@ -343,7 +343,7 @@ public class LoteRpsSoapBindingStub extends org.apache.axis.client.Stub implemen
 		_call.setUseSOAPAction(true);
 		_call.setSOAPActionURI("");
 		_call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-		_call.setOperationName(new javax.xml.namespace.QName("http://proces.wsnfe2.dsfnet.com.br", "consultarNota"));
+		_call.setOperationName(new javax.xml.namespace.QName("http://proces.wsnfe2.dsfnet.com.br", "ConsultarNota"));
 
 		setRequestHeaders(_call);
 		setAttachments(_call);

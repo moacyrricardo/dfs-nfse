@@ -15,8 +15,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import br.com.dsfnet.nfse.util.XMLGregorianCalendarAdapter;
 import br.com.dsfnet.nfse.wsnfe2.tp.TpLote;
 import br.com.dsfnet.nfse.wsnfe2.tp.TpMetodoEnvio;
 
@@ -163,12 +165,16 @@ public class ReqEnvioLoteRPS {
 		protected String razaoSocialRemetente;
 		@XmlElement(defaultValue = "true")
 		protected boolean transacao;
+		
 		@XmlElement(required = true)
 		@XmlSchemaType(name = "date")
+		@XmlJavaTypeAdapter(XMLGregorianCalendarAdapter.class)
 		protected XMLGregorianCalendar dtInicio;
 		@XmlElement(required = true)
 		@XmlSchemaType(name = "date")
+		@XmlJavaTypeAdapter(XMLGregorianCalendarAdapter.class)
 		protected XMLGregorianCalendar dtFim;
+		
 		@XmlElement(name = "QtdRPS")
 		protected int qtdRPS;
 		@XmlElement(name = "ValorTotalServicos", required = true)
