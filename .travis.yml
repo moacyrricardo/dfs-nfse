@@ -1,5 +1,5 @@
 language: java
 jdk:
   - oraclejdk7
-  - openjdk7
-script: cd dfs-nfse
+  - openjdke
+before_script: cd dfs-nfse
