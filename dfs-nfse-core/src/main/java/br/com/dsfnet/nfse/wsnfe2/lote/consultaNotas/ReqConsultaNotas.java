@@ -15,7 +15,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import br.com.dsfnet.nfse.util.XMLGregorianCalendarAdapter;
 //import org.w3._2000._09.xmldsig.SignatureType;
 
 
@@ -58,8 +61,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cabecalho",
-    "signature"
+    "cabecalho"
 })
 @XmlRootElement(name = "ReqConsultaNotas", namespace = "http://localhost:8080/WsNFe2/lote")
 public class ReqConsultaNotas {
@@ -162,12 +164,17 @@ public class ReqConsultaNotas {
         protected String cpfcnpjRemetente;
         @XmlElement(name = "InscricaoMunicipalPrestador")
         protected long inscricaoMunicipalPrestador;
+        
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
+        @XmlJavaTypeAdapter(XMLGregorianCalendarAdapter.class)
         protected XMLGregorianCalendar dtInicio;
+        
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
+        @XmlJavaTypeAdapter(XMLGregorianCalendarAdapter.class)
         protected XMLGregorianCalendar dtFim;
+        
         @XmlElement(name = "NotaInicial")
         protected Integer notaInicial;
         @XmlElement(name = "Versao")
