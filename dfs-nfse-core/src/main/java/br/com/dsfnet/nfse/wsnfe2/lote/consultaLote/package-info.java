@@ -10,7 +10,7 @@
 				@XmlNs(prefix = "tipos", namespaceURI = "http://issdigital.campinas.sp.gov.br/WsNFe2/tp")
 				}, 
 				namespace = "http://localhost:8080/WsNFe2/lote",
-				location = "http://localhost:8080/WsNFe2/lote http://issdigital.campinas.sp.gov.br/WsNFe2/xsd/ConsultaSeqRps.xsd"
+				location = "http://localhost:8080/WsNFe2/lote http://issdigital.campinas.sp.gov.br/WsNFe2/xsd/ReqConsultaLote.xsd"
 		)
-package br.com.dsfnet.nfse.wsnfe2.consultaSeqRPS;
+package br.com.dsfnet.nfse.wsnfe2.lote.consultaLote;
 import javax.xml.bind.annotation.XmlNs;

@@ -6,9 +6,13 @@
 //
 
 
-package br.com.dsfnet.nfse.wsnfe2.consultaSeqRPS;
+package br.com.dsfnet.nfse.wsnfe2.lote.retornoConsultaNotas;
 
 import javax.xml.bind.annotation.XmlRegistry;
+
+import br.com.dsfnet.nfse.wsnfe2.lote.consultaLote.ReqConsultaLote;
+
+
 
 
 /**
@@ -40,16 +44,16 @@ public class ObjectFactory {
      * Create an instance of {@link ReqConsultaLote }
      * 
      */
-    public ConsultaSeqRps createConsultaSeqRPS() {
-        return new ConsultaSeqRps();
+    public RetornoConsultaNotas createRetornoConsultaLote() {
+        return new RetornoConsultaNotas();
     }
 
     /**
      * Create an instance of {@link ReqConsultaLote.Cabecalho }
      * 
      */
-    public ConsultaSeqRps.Cabecalho createConsultaSeqRPSCabecalho() {
-        return new ConsultaSeqRps.Cabecalho();
+    public RetornoConsultaNotas.Cabecalho createReqConsultaLoteCabecalho() {
+        return new RetornoConsultaNotas.Cabecalho();
     }
 
 }
