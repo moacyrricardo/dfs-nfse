@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import br.com.dsfnet.nfse.util.AssinaturaAdapter;
+import br.com.dsfnet.nfse.wsnfe2.enums.TipoBairro;
 
 
 /**
@@ -202,7 +203,7 @@ public class TpRPS {
     @XmlElement(name = "ComplementoEnderecoTomador")
     protected String complementoEnderecoTomador;
     @XmlElement(name = "TipoBairroTomador", required = true)
-    protected String tipoBairroTomador;
+    protected TipoBairro tipoBairroTomador;
     @XmlElement(name = "BairroTomador", required = true)
     protected String bairroTomador;
     @XmlElement(name = "CidadeTomador")
@@ -759,7 +760,7 @@ public class TpRPS {
      *     {@link String }
      *     
      */
-    public String getTipoBairroTomador() {
+    public TipoBairro getTipoBairroTomador() {
         return tipoBairroTomador;
     }
 
@@ -771,7 +772,7 @@ public class TpRPS {
      *     {@link String }
      *     
      */
-    public void setTipoBairroTomador(String value) {
+    public void setTipoBairroTomador(TipoBairro value) {
         this.tipoBairroTomador = value;
     }
 

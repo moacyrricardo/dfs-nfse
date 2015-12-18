@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import br.com.dsfnet.nfse.wsnfe2.enums.TipoBairro;
+
 
 /**
  * Informações do Bairro com o seu Tipo.
@@ -44,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
 public class TpBairroCompleto {
 
     @XmlElement(name = "TipoBairro", required = true)
-    protected String tipoBairro;
+    protected TipoBairro tipoBairro;
     @XmlElement(name = "NomeBairro", required = true)
     protected String nomeBairro;
 
@@ -56,7 +58,7 @@ public class TpBairroCompleto {
      *     {@link String }
      *     
      */
-    public String getTipoBairro() {
+    public TipoBairro getTipoBairro() {
         return tipoBairro;
     }
 
@@ -68,7 +70,7 @@ public class TpBairroCompleto {
      *     {@link String }
      *     
      */
-    public void setTipoBairro(String value) {
+    public void setTipoBairro(TipoBairro value) {
         this.tipoBairro = value;
     }
 
